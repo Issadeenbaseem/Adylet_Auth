@@ -1,0 +1,19 @@
+{
+  "name": "adylet-frontend-demo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "@nuxtjs/apollo": "^4.0.1-rc.5",
+    "@nuxtjs/auth-next": "^5.0.0-1641800591.39ceedf",
+    "core-js": "^3.15.1",
+    "graphql": "^15.8.0",
+    "graphql-tag": "^2.12.6",
+    "nuxt": "^2.15.7"
+  }
+}
