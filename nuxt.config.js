@@ -69,6 +69,7 @@ export default {
   modules: [
     '@nuxtjs/auth-next',
     '@nuxtjs/apollo',
+    
   ],
   auth: {
     strategies: {
@@ -95,6 +96,5 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {
-  }
+
 }

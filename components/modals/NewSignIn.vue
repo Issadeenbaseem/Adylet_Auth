@@ -1,7 +1,7 @@
 <template>
   <div
     class="modal fade pxp-user-modal"
-    id="pxp-signin-modal"
+    id="pxp-newsignin-modal"
     aria-hidden="true"
     aria-labelledby="signinModal"
     tabindex="-1"
@@ -21,11 +21,15 @@
             <img src="images/signin-fig.png" alt="Sign in" />
           </div>
           <h5 class="modal-title text-center mt-4" id="signinModal">
-            Sign In
+           Sign In
           </h5>
-            <div class="modal-title2">
+          <h5 class="modal-title1 text-left mt-4" id="signinModal">
+           Your are Registed Now . You can SignIn
+          </h5>
+          <div class="modal-title2">
           <Notification v-if="error" class="modal-title2 text-left" type="danger" :message="error" />
           </div>
+
           <form method="POST" @submit.prevent="handleLoginSubmit" class="mt-4">
             <div class="form-floating mb-3">
               <input
@@ -34,6 +38,7 @@
                 class="form-control"
                 id="pxp-signin-email"
                 placeholder="Email address"
+                required="true"
               />
               <label for="pxp-signin-email">Email address</label>
               <span class="fa fa-envelope-o"></span>
@@ -45,6 +50,7 @@
                 class="form-control"
                 id="pxp-signin-password"
                 placeholder="Password"
+                required="true"
               />
               <label for="pxp-signin-password">Password</label>
               <span class="fa fa-lock"></span>
@@ -103,7 +109,7 @@ export default {
       try {
         // Using our custom strategy
         await this.$auth.loginWith("graphql", credentials);
-        $('#pxp-signin-modal').modal('hide');
+        $('#pxp-newsignin-modal').modal('hide');
       } catch (e) {
          this.error = e.message.replace("GraphQL error:", "   ");
       }

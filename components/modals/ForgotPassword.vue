@@ -1,7 +1,7 @@
 <template>
   <div
     class="modal fade pxp-user-modal"
-    id="pxp-signin-modal"
+    id="pxp-forgot-modal"
     aria-hidden="true"
     aria-labelledby="signinModal"
     tabindex="-1"
@@ -21,15 +21,13 @@
             <img src="images/signin-fig.png" alt="Sign in" />
           </div>
           <h5 class="modal-title text-center mt-4" id="signinModal">
-            Sign In
+            Welcome back!
           </h5>
-            <div class="modal-title2">
-          <Notification v-if="error" class="modal-title2 text-left" type="danger" :message="error" />
-          </div>
+       
           <form method="POST" @submit.prevent="handleLoginSubmit" class="mt-4">
             <div class="form-floating mb-3">
               <input
-                v-model="form.identifier"
+
                 type="email"
                 class="form-control"
                 id="pxp-signin-email"
@@ -40,7 +38,7 @@
             </div>
             <div class="form-floating mb-3">
               <input
-                v-model="form.password"
+
                 type="password"
                 class="form-control"
                 id="pxp-signin-password"
@@ -53,8 +51,8 @@
               Continue
             </button>
             <div class="mt-4 text-center pxp-modal-small">
-              <a class="pxp-modal-link"
-                 data-bs-target="#pxp-forgot-modal"  data-bs-toggle="modal"  data-bs-dismiss="modal"  role="button">Forgot password</a>
+              <a class="pxp-modal-link" data-bs-toggle="modal"
+                 data-bs-target="#pxp-forgotpassword-modal"   role="button">Forgot password</a>
             </div>
             <div class="mt-4 text-center pxp-modal-small">
               New to Adylet?
@@ -73,41 +71,13 @@
     </div>
   </div>
 </template>
+
 <script>
-import Notification from "~/components/Notification";
 export default {
-  middleware: "auth",
 
-  auth: "guest",
-  components: {
-    Notification,
-  },
-
-  data() {
-    return {
-      form: {
-        identifier: "",
-        password: "",
-      },
-      formBusy: false,
-      success: null,
-      error: null,
-    };
-  },
-
-  methods: {
-    async handleLoginSubmit() {
-      const credentials = this.form;
-       this.formBusy = true
-
-      try {
-        // Using our custom strategy
-        await this.$auth.loginWith("graphql", credentials);
-        $('#pxp-signin-modal').modal('hide');
-      } catch (e) {
-         this.error = e.message.replace("GraphQL error:", "   ");
-      }
-    },
-  },
-};
+}
 </script>
+
+<style>
+
+</style>

@@ -5401,10 +5401,24 @@ ol.pxp-comments-list {
 .modal-body {
     padding: 40px;
 }
-.modal-title {
+
+.modal-title{
     font-weight: 600;
     font-size: 22px;
+
     letter-spacing: -1px;
+}
+.modal-title1{
+    font-weight: 500;
+    font-size: 16px;
+    color: green;
+    letter-spacing: -1px;
+}
+.modal-title2{
+  font-weight: 500;
+  font-size: 16px;
+  color: red;
+  letter-spacing: -1px;
 }
 .pxp-user-modal .modal-title {
     padding: 0 40px;
@@ -5572,14 +5586,6 @@ ol.pxp-comments-list {
         max-width: 1600px;
     }
 }
-
-
-
-
-
-
-
-
 
 @media screen and (max-width: 1736px) {
     .pxp-hero-boxed-content {

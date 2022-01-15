@@ -139,9 +139,9 @@
                     <nav class="pxp-user-nav d-none d-sm-flex">
                         <a href="javascript:;" class="btn rounded-pill pxp-nav-btn">Post Ad</a>
                         <a v-if="!$auth.loggedIn"  class="btn rounded-pill pxp-user-nav-trigger" data-bs-toggle="modal" href="#pxp-signin-modal" role="button">Sign in</a>
-                        <div v-else><a  @click="handleLogout" class="btn rounded-pill pxp-user-nav-trigger" >Sign out</a></div>
+                        <div v-else><a  @click="handleLogout" class="btn rounded-pill pxp-user-nav-trigger" >Sign out</a>
+                         <a  class="btn rounded-pill pxp-nav-btn">{{ $auth.user.username }}</a></div>
 
-                            <h3 v-if="$auth.loggedIn" class="text-white text-center">{{this.$auth.user.username }}</h3>
                     </nav>
                 </div>
             </div>
@@ -272,6 +272,8 @@
 
         <SignIn />
         <SignUp />
+        <ForgotPassword/>
+        <NewSignIn/>
     </div>
 </template>
 
@@ -281,6 +283,10 @@ import { homeQuery } from '../graphql/queries/home';
 import HomeCategories from '~/components/HomeCategories.vue'
 import SignIn from '../components/modals/SignIn.vue';
 import SignUp from '../components/modals/SignUp.vue';
+import ForgotPassword from '../components/modals/ForgotPassword.vue';
+import NewSignIn from '../components/modals/NewSignIn.vue';
+
+
 import { mapGetters } from "vuex";
 export default {
 
@@ -315,6 +321,6 @@ export default {
             },
         }
     },
-    components: { HomeCategories, SignIn, SignUp }
+    components: { HomeCategories, SignIn, SignUp,ForgotPassword,NewSignIn }
 }
 </script>
