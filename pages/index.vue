@@ -140,7 +140,10 @@
                         <a href="javascript:;" class="btn rounded-pill pxp-nav-btn">Post Ad</a>
                         <a v-if="!$auth.loggedIn"  class="btn rounded-pill pxp-user-nav-trigger" data-bs-toggle="modal" href="#pxp-signin-modal" role="button">Sign in</a>
                         <div v-else><a  @click="handleLogout" class="btn rounded-pill pxp-user-nav-trigger" >Sign out</a>
-                         <a  class="btn rounded-pill pxp-nav-btn">{{ $auth.user.username }}</a></div>
+                         <nuxt-link   :to="{name: 'editprofile', query: { id: $auth.user.id} }" class="btn rounded-pill pxp-user-nav-trigger">{{ $auth.user.username }}</nuxt-link>
+
+                         </div>
+
 
                     </nav>
                 </div>
@@ -274,6 +277,7 @@
         <SignUp />
         <ForgotPassword/>
         <NewSignIn/>
+        <EditProfil/>
     </div>
 </template>
 
@@ -285,13 +289,14 @@ import SignIn from '../components/modals/SignIn.vue';
 import SignUp from '../components/modals/SignUp.vue';
 import ForgotPassword from '../components/modals/ForgotPassword.vue';
 import NewSignIn from '../components/modals/NewSignIn.vue';
+import EditProfile from '../components/modals/EditProfile.vue';
 
 
-import { mapGetters } from "vuex";
+
 export default {
 
   computed: {
- ...mapGetters(["isAuthenticated", "loggedInUser"]),
+
  },
 
     data() {
@@ -306,7 +311,11 @@ export default {
        this.$nuxt.$loading.start()
      await this.$auth.logout()
 
+    },
+  async editprofile(){
+      await  $('#pxp-editprofile-modal').modal('toggle');
     }
+
    },
     apollo: {
         data: {
@@ -321,6 +330,6 @@ export default {
             },
         }
     },
-    components: { HomeCategories, SignIn, SignUp,ForgotPassword,NewSignIn }
+    components: {HomeCategories, SignIn, SignUp, ForgotPassword, NewSignIn, EditProfile}
 }
 </script>

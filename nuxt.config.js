@@ -69,7 +69,9 @@ export default {
   modules: [
     '@nuxtjs/auth-next',
     '@nuxtjs/apollo',
-    
+    '@nuxtjs/axios',
+
+
   ],
   auth: {
     strategies: {

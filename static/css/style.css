@@ -5959,6 +5959,7 @@ ol.pxp-comments-list {
     }
     .pxp-dashboard-content-details {
         margin-right: 0;
+        background-color: #97ABBA;
     }
     .pxp-dashboard-content-header {
         display: flex;
@@ -5979,6 +5980,7 @@ ol.pxp-comments-list {
     .pxp-dashboard-content-details h1 {
         font-size: 28px;
         letter-spacing: -1px;
+        background-color: #97ABBA;
     }
     .pxp-posts-card-2 {
         flex-direction: column;

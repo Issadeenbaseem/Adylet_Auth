@@ -1,9 +1,9 @@
 <template>
   <div
     class="modal fade pxp-user-modal"
-    id="pxp-signup-modal"
+    id="pxp-editprofile-modal"
     aria-hidden="true"
-    aria-labelledby="signupModal"
+    aria-labelledby="editprofileModal"
     tabindex="-1"
   >
     <div class="modal-dialog modal-dialog-centered">
@@ -24,7 +24,7 @@
             Create an account
           </h5>
 
-          <Notification v-if="error" class="modal-title2 text-left" type="danger" :message="error" />
+          <Notification v-if="error" type="danger" :message="error" />
           <form @submit.prevent="register" class="mt-4">
             <div class="form-floating mb-3">
               <input
