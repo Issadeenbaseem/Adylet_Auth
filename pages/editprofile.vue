@@ -62,7 +62,7 @@
                 />
               </div>
             </div>
-             <div class="col-sm-6">
+            <div class="col-sm-6">
               <div class="mb-3">
                 <label for="pxp-candidate-location" class="form-label"
                   >Password</label
@@ -113,12 +113,11 @@
 
           <div class="pxp-candidate-photo mb-3">
             <input
-
-              type="image"
+              type="file"
               id="pxp-candidate-photo-choose-file"
               accept="image/*"
-
-
+              @change="upload_photo"
+              ref="file"
             />
             <label for="pxp-candidate-photo-choose-file" class="pxp-cover"
               ><span>Upload<br />Photo</span></label
@@ -128,7 +127,9 @@
       </div>
 
       <div class="mt-4 mt-lg-5">
-        <button type="submit" class="btn rounded-pill pxp-modal-cta">Upload</button>
+        <button type="submit" class="btn rounded-pill pxp-modal-cta">
+          Upload
+        </button>
       </div>
     </form>
   </div>
@@ -144,26 +145,48 @@ export default {
         FirstName: "",
         LastName: "",
         email: "",
-        password:"",
+        password: "",
         ContactNumber: "",
         PreferredCommunicationChannel: "",
-
+        files: null,
       },
     };
   },
   methods: {
-    asyncData(context) {
-      if (!context.route.query.id) context;
-      else
-        return {
-          id: context.route.query.id,
-        };
+    async upload_photo() {
+      this.form.files = this.$refs.file.files[0];
+      let id = this.$route.query.id;
+      console.log(this.$refs.file.files[0])
+
+      try {
+        const {} = await this.$apollo.mutate({
+          mutation: gql`
+            mutation (
+              $refld: ID!
+              $ref: String
+              $field: String
+              $file: Upload!
+            ){}
+              upload(refId: $id, ref:"plugin::users-permissions.user", field: "DisplayPicture", file: $files) {
+                data {
+                  id
+                  attributes {
+                    name
+                  }
+                }
+
+            }
+          `,
+          variables: { id, files },
+
+        });
+      } catch (error) {}
     },
+
     async upload() {
       this.error = null;
       const credentials = this.form;
       let id = this.$route.query.id;
-
 
       try {
         const {} = await this.$apollo.mutate({
@@ -177,9 +200,9 @@ export default {
               $id: ID!
               $ContactNumber: String!
               $PreferredCommunicationChannel: String!
-              $file: Upload!
 
-            ) {
+
+            ){
               updateUsersPermissionsUser(
                 id: $id
                 data: {
@@ -191,17 +214,19 @@ export default {
                   ContactNumber: $ContactNumber
                   PreferredCommunicationChannel: $PreferredCommunicationChannel
 
+
                 }
               ) {
                 data {
                   id
                 }
+               }
               }
-            }
           `,
-          variables: { ...credentials, id },
+          variables: { ...credentials, id},
+
         });
-         window.location.replace("http://localhost:3000");
+        window.location.replace("http://localhost:3000/");
       } catch (e) {
         console.log(e);
       }
