@@ -13,7 +13,6 @@
               type="text"
               id="pxp-candidate-name"
               class="form-control"
-              placeholder="Add your name"
             />
           </div>
 
@@ -25,7 +24,7 @@
                 >
                 <input
                   type="text"
-                  v-model="form.first_name"
+                  v-model="form.FirstName"
                   id="pxp-candidate-title"
                   class="form-control"
                   placeholder="Add your first name"
@@ -39,7 +38,7 @@
                 >
                 <input
                   type="tel"
-                  v-model="form.last_name"
+                  v-model="form.LastName"
                   id="pxp-candidate-location"
                   class="form-control"
                   placeholder="Add your last name"
@@ -54,7 +53,7 @@
                   >PreferredCommunicationChannel</label
                 >
                 <input
-                  type="tel"
+                  type="text"
                   v-model="form.PreferredCommunicationChannel"
                   id="pxp-candidate-location"
                   class="form-control"
@@ -68,7 +67,7 @@
                   >Password</label
                 >
                 <input
-                  type="tel"
+                  type="password"
                   v-model="form.password"
                   id="pxp-candidate-location"
                   class="form-control"
@@ -88,7 +87,6 @@
                   type="email"
                   id="pxp-candidate-email"
                   class="form-control"
-                  placeholder="candidate@email.com"
                 />
               </div>
             </div>
@@ -137,9 +135,21 @@
 
 <script>
 import gql from "graphql-tag";
+//import { userQuery } from "../graphql/queries/user";
+
 export default {
+  middleware: "auth",
+
+  mounted() {
+    this.form.email = this.user.attributes.email;
+    this.form.username = this.user.attributes.username;
+    this.form.id = this.$auth.user.id;
+    this.form.files = this.$refs.file.files[0];
+  },
+
   data() {
     return {
+      user: [],
       form: {
         username: "",
         FirstName: "",
@@ -148,45 +158,86 @@ export default {
         password: "",
         ContactNumber: "",
         PreferredCommunicationChannel: "",
-        files: null,
+        files: "",
+        id: "",
+        name: "",
       },
     };
   },
-  methods: {
-    async upload_photo() {
-      this.form.files = this.$refs.file.files[0];
-      let id = this.$route.query.id;
-      console.log(this.$refs.file.files[0])
 
-      try {
-        const {} = await this.$apollo.mutate({
-          mutation: gql`
-            mutation (
+  methods: {
+
+   async  upload_photo(){
+      let refld = this.$auth.user.id;
+       let file = this.$refs.file.files[0];
+      console.log(refld)
+
+      await this.$apollo
+          .mutate({
+            mutation: gql`
+            mutation(
               $refld: ID!
               $ref: String
               $field: String
               $file: Upload!
-            ){}
-              upload(refId: $id, ref:"plugin::users-permissions.user", field: "DisplayPicture", file: $files) {
+            ) {
+              upload(refId:$refld,ref:$ref,field:$field,file:$file) {
                 data {
                   id
-                  attributes {
-                    name
-                  }
                 }
-
+            }
             }
           `,
-          variables: { id, files },
+            variables:{
+                  file,refld,ref:"plugin::users-permissions.user",field:"DisplayPicture"
+            }
+          })
+      },
 
-        });
-      } catch (error) {}
-    },
+    // async upload_photo() {
+    //   console.log();
+    //   let id = this.$auth.user.id;
+    //   let files = this.$refs.file.files[0];
+    //   console.log(id);
+    //   console.log(files);
+
+    //   try {
+    //     const {} = await this.$apollo.mutate({
+          // mutation: gql`
+          //   mutation (
+          //     $refld: ID!
+          //     $ref: String
+          //     $field: String
+          //     $file: Upload!
+          //   ){}
+          //     upload(refId:$id, ref:"plugin::users-permissions.user",field: "DisplayPicture", file:files) {
+          //       data {
+          //         id
+          //         attributes {
+          //           name
+          //         }
+          //       }
+
+          //   }
+          // `,
+    //       variables() {
+    //         return{
+    //           id, files
+    //         }
+    //         },
+    //       context: {
+    //         hasUpload: true,
+    //       },
+    //     });
+    //   } catch (error) {}
+    // },
 
     async upload() {
       this.error = null;
       const credentials = this.form;
-      let id = this.$route.query.id;
+      let email = this.$auth.user.email;
+      console.log(email);
+      let id = this.form.id;
 
       try {
         const {} = await this.$apollo.mutate({
@@ -200,9 +251,7 @@ export default {
               $id: ID!
               $ContactNumber: String!
               $PreferredCommunicationChannel: String!
-
-
-            ){
+            ) {
               updateUsersPermissionsUser(
                 id: $id
                 data: {
@@ -213,23 +262,54 @@ export default {
                   password: $password
                   ContactNumber: $ContactNumber
                   PreferredCommunicationChannel: $PreferredCommunicationChannel
-
-
                 }
               ) {
                 data {
                   id
                 }
-               }
               }
+            }
           `,
-          variables: { ...credentials, id},
-
+          variables: { ...credentials, id },
         });
-        window.location.replace("http://localhost:3000/");
       } catch (e) {
         console.log(e);
       }
+    },
+  },
+
+  apollo: {
+    data: {
+
+      query: gql`
+        query($id:ID!) {
+          usersPermissionsUser(id: $id) {
+
+            data {
+              id
+              attributes {
+                username
+                email
+                PreferredCommunicationChannel
+                confirmed
+              }
+            }
+          }
+        }
+      `,
+      manual: true,
+      result({ data }) {
+        console.log(data)
+        this.user = data.usersPermissionsUser.data;
+
+      },
+      variables(){
+        return{
+          id:this.$auth.user.id
+        }
+
+
+      },
     },
   },
 };

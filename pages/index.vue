@@ -140,7 +140,7 @@
                         <a href="javascript:;" class="btn rounded-pill pxp-nav-btn">Post Ad</a>
                         <a v-if="!$auth.loggedIn"  class="btn rounded-pill pxp-user-nav-trigger" data-bs-toggle="modal" href="#pxp-signin-modal" role="button">Sign in</a>
                         <div v-else><a  @click="handleLogout" class="btn rounded-pill pxp-user-nav-trigger" >Sign out</a>
-                         <nuxt-link   :to="{name: 'editprofile', query: { id: $auth.user.id} }" class="btn rounded-pill pxp-user-nav-trigger">{{ $auth.user.username }}</nuxt-link>
+                         <a   href="editprofile" class="btn rounded-pill pxp-user-nav-trigger">{{ $auth.user.username }}</a>
 
                          </div>
 
@@ -277,7 +277,7 @@
         <SignUp />
         <ForgotPassword/>
         <NewSignIn/>
-        <EditProfil/>
+
     </div>
 </template>
 
@@ -289,7 +289,7 @@ import SignIn from '../components/modals/SignIn.vue';
 import SignUp from '../components/modals/SignUp.vue';
 import ForgotPassword from '../components/modals/ForgotPassword.vue';
 import NewSignIn from '../components/modals/NewSignIn.vue';
-import EditProfile from '../components/modals/EditProfile.vue';
+
 
 
 
@@ -330,6 +330,6 @@ export default {
             },
         }
     },
-    components: {HomeCategories, SignIn, SignUp, ForgotPassword, NewSignIn, EditProfile}
+    components: {HomeCategories, SignIn, SignUp, ForgotPassword, NewSignIn}
 }
 </script>
